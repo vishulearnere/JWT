@@ -4,7 +4,7 @@
 // setup authothication so only dashboard can be accesesd if token is there 
 
 const jwt = require('jsonwebtoken')
-const CustomAPIError = require('../errors/custom-error') // here we are importing class 
+const {BadRequest} = require('../errors') // here we are importing class 
 
 
 const login = async (req, res)=> {
@@ -16,7 +16,7 @@ const login = async (req, res)=> {
 
     if(!username || !password){
         req.user = username
-        throw new CustomAPIError('Please provide email and password', 400) // this will be handeled by the middleware(error-handler)
+        throw new BadRequest('Please provide email and password') // this will be handeled by the middleware(error-handler)
     }
     const id = new Date().getDate() 
 
@@ -30,7 +30,7 @@ const login = async (req, res)=> {
 const dashboard = async (req, res)=> {
        
     randomNumber = Math.floor(Math.random(0, 100) * 100)
-    res.status(200).json({ msg: `Hi, ${req.username}`, secret:` your secret Number is  ${randomNumber} ` })
+    res.status(200).json({ msg: `Hi, ${req.user.username}`, secret:` your secret Number is  ${randomNumber} ` })
 
 }
 
